@@ -31,23 +31,23 @@ m:Start()
 
 ## Documentation
 
-# Dictionary DynamicDOF:GetDefaultSettings()
+### Dictionary DynamicDOF:GetDefaultSettings()
 
 Returns a dictionary of the default settings for the module.
 
-# Dictionary DynamicDOF:GetSettings()
+### Dictionary DynamicDOF:GetSettings()
 
 Returns the settings currently in use by the module.
 
-# Array DynamicDOF:AddToRaycastFilter( Instance item )
+### Array DynamicDOF:AddToRaycastFilter( Instance item )
 
 Adds an item to the raycast filter that the module uses for the dynamic depth of field. Returns the updated raycast filter.
 
-# Void DynamicDOF:RemoveFromRaycastFilter( Instance item )
+### Void DynamicDOF:RemoveFromRaycastFilter( Instance item )
 
 Removes an item from the raycast filter that the module uses for the dynamic depth of field.
 
-# Void DynamicDOF:ApplySettings( Dictionary settings )
+### Void DynamicDOF:ApplySettings( Dictionary settings )
 
 Overwrites the current settings with the supplied `settings`. **Every field must be present, so it is recommended to first get the default settings and change them from there.**
 
@@ -85,11 +85,11 @@ local settings = {
 m:ApplySettings(settings)
 ```
 
-# Void DynamicDOF:Start()
+### Void DynamicDOF:Start()
 
 Starts the module. Self-explanatory.
 
-# Void DynamicDOF:Stop()
+### Void DynamicDOF:Stop()
 
 Stops the module. Self-explanatory.
 
