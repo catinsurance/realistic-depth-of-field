@@ -65,11 +65,14 @@ m:ApplySettings(settings)
 ----------------------------
 -- Alternatively, if you want to create the settings table yourself:
 
-local m = require(path.to.module)
+local m = require(script.ModuleScript)
 
-local settings = {
+local s = {
+	SmoothTransitions = false;
+	TransitionTime = 0.25;
+	TransitionThreshold = 20;
 	IgnoreGuiInset = true;
-	RaycastParameters = RaycastParams.new();
+	RaycastParameters = p;
 	RayLength = 200;
 	CompatibilityForFirstPerson = true;
 	NearIntensity = 0.35;
@@ -82,6 +85,9 @@ local settings = {
 	InFocusRadius = 25;
 }
 
+m:ApplySettings(s)
+
+m:Start()
 m:ApplySettings(settings)
 ```
 
@@ -92,6 +98,62 @@ Starts the module. Self-explanatory.
 ### Void DynamicDOF:Stop()
 
 Stops the module. Self-explanatory.
+
+## Module Settings
+
+The module has many settings that you can play around with. Below explains what each setting does.
+
+### Boolean SmoothTransitions (default: false)
+
+If you find the jump of focus between, for example, looking at something far away to looking at something up-close too jarring, you can turn on SmoothTransitions. This basically tweens the FocusDistance property of the depth of field effect, emulating how your eyes take a second to adjust focus to something up-close/far away.
+
+### Number TransitionTime (default: 0.25)
+
+How long the tween is for the SmoothTransitions property. This takes time in seconds.
+
+### Number TransitionThreshold (default: 20)
+
+The distance required from your last looked-at location to your new looked-at location in studs required for the SmoothTransitions effect to actually take place.
+
+### Boolean IgnoreGuiInset (default: true)
+
+Tells the module to ignore the 36 pixel gap the top-bar creates when finding the center of the screen. This is set to true by default because your mouse also ignores the gui inset when in first person mode.
+
+### RaycastParams RaycastParameters (default: RaycastParams p)
+
+Want to make the module not ignore water, or make the raycast filter a whitelist instead of a blacklist? Create a new [RaycastParams](https://developer.roblox.com/en-us/api-reference/datatype/RaycastParams) objec and set this property to the aforementioned new object.
+
+### Number RayLength (default: 200)
+
+The length of the ray that is cast from the middle of the screen. This is by default 200 because the max the focus distance can be for a DepthOfFieldEffect is 200.
+
+### Number NearIntensity (default: 0.35)
+
+The intensity of the blur of objects in the foreground.
+
+### Number FarIntensity (default: 0.65)
+
+The intensity of the blur of objects in the background.
+
+### Number FirstPersonThreshold (default: 2)
+
+The maximum distance in studs the camera needs to be from the head of the character to determine if the player is in first person or not.
+
+### Number MaxFocusDistance (default: 200)
+
+The maximum distance the FocusDistance of the DepthOfFieldEffect can be set to. Anything higher than 200 or lower than 0.05 is futile, as those are the maximum and minimum numbers the DepthOfFieldEffect takes for it's FocusDistance respectively.
+
+### Number MinFocusDistance (default: 0.05)
+
+The minimum distance the FocusDistance of the DepthOfFieldEffect can be set to. Anything higher than 200 or lower than 0.05 is futile, as those are the maximum and minimum numbers the DepthOfFieldEffect takes for it's FocusDistance respectively.
+
+### Boolean FilterTranslucentParts (default: true)
+
+Tells the model to filter parts with a transparency greater than 0. This is useful if your RaycastParams' filter is on blacklist (which by default it is), as it'll ignore things like windows which usually are semi-transparent (or translucent). If you have your RaycastParams' filter on whitelist mode for whatever reason, you'll want to turn this off.
+
+### Number InFocusRadius (default: 25) 
+
+Determines the InFocusRadius property of the DepthOfFieldEffect.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
