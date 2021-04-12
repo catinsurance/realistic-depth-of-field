@@ -137,7 +137,6 @@ local function CreateRay(char, pos, direction)
 						data.FilterCache = settings.RaycastParameters.FilterDescendantsInstances
 					end
 					if not data.InsertCharacterToBlacklist then
-						print(direction)
 						data.InsertCharacterToBlacklist = true
 						m:AddToRaycastFilter(char)
 					end
