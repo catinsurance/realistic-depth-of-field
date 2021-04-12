@@ -21,7 +21,7 @@ local m = require(path.to.module)
 
 local settings = m:GetDefaultSettings()
 
-settings.IgnoreGuiInset = false
+settings.SmoothTransitions = true
 settings.InFocusRadius = 30
 
 m:ApplySettings(settings)
@@ -58,7 +58,7 @@ local m = require(path.to.module)
 
 local settings = m:GetDefaultSettings()
 
-settings.IgnoreCharacter = true
+settings.SmoothTransitions = true
 
 m:ApplySettings(settings)
 
@@ -76,7 +76,6 @@ local s = {
 	RayLength = 200;
 	CompatibilityForFirstPerson = true;
 	NearIntensity = 0.35;
-	IgnoreCharacter = false;
 	FarIntensity = 0.65;
 	FirstPersonThreshold = 2;
 	MaxFocusDistance = 200;
