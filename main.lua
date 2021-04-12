@@ -4,6 +4,7 @@ m.__index = m
 local rs = game:GetService("RunService")
 local players = game:GetService("Players")
 local gui = game:GetService("GuiService")
+local ts = game:GetService("TweenService")
 
 
 local settings = nil
@@ -17,12 +18,14 @@ function m:GetDefaultSettings()
 	p.FilterType = Enum.RaycastFilterType.Blacklist
 
 	return {
+		SmoothTransitions = false;
+		TransitionTime = 0.25;
+		TransitionThreshold = 20;
 		IgnoreGuiInset = true;
 		RaycastParameters = p;
 		RayLength = 200;
 		CompatibilityForFirstPerson = true;
 		NearIntensity = 0.35;
-		IgnoreCharacter = false;
 		FarIntensity = 0.65;
 		FirstPersonThreshold = 2;
 		MaxFocusDistance = 200;
@@ -37,6 +40,8 @@ do
 	data.AlreadyFiltered = {}
 	data.Count = 0
 	settings = m:GetDefaultSettings()
+	
+	data.TweenInfo = TweenInfo.new(settings.TransitionTime, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
 end
 
 -- Get the current settings
@@ -76,18 +81,20 @@ end
 -- Sets the module's settings
 function m:ApplySettings(preferences)
 	assert(type(preferences) == "table", "Function ApplySettings takes a table as an argument! You gave: " .. type(preferences))
-	assert(preferences.IgnoreGuiInset == nil or type(preferences.IgnoreGuiInset) == "boolean", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "IgnoreGuiInset"))
-	assert(preferences.RaycastParameters == nil or typeof(preferences.RaycastParameters) == "RaycastParams", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "RaycastParameters"))
-	assert(preferences.RayLength == nil or type(preferences.RayLength) == "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "RayLength"))
-	assert(preferences.NearIntensity == nil or type(preferences.NearIntensity) == "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "NearIntensity"))
-	assert(preferences.FarIntensity == nil or type(preferences.FarIntensity) == "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "FarIntensity"))
+	assert(preferences.IgnoreGuiInset ~= nil or type(preferences.IgnoreGuiInset) ~= "boolean", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "IgnoreGuiInset"))
+	assert(preferences.RaycastParameters ~= nil or typeof(preferences.RaycastParameters) ~= "RaycastParams", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "RaycastParameters"))
+	assert(preferences.RayLength ~= nil or type(preferences.RayLength) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "RayLength"))
+	assert(preferences.NearIntensity ~= nil or type(preferences.NearIntensity) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "NearIntensity"))
+	assert(preferences.FarIntensity ~= nil or type(preferences.FarIntensity) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "FarIntensity"))
 	assert(preferences.CompatibilityForFirstPerson ~= nil or type(preferences.CompatibilityForFirstPerson) == "boolean", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "CompatibilityForFirstPerson"))
-	assert(preferences.IgnoreCharacter == nil or type(preferences.IgnoreCharacter) == "boolean", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "IgnoreCharacter"))
-	assert(preferences.FirstPersonThreshold == nil or type(preferences.FirstPersonThreshold) == "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "FirstPersonThreshold"))
-	assert(preferences.MaxFocusDistance == nil or type(preferences.MaxFocusDistance) == "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "MaxFocusDistance"))
-	assert(preferences.MinFocusDistance == nil or type(preferences.MinFocusDistance) == "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "MinFocusDistance"))
-	assert(preferences.FilterTranslucentParts == nil or type(preferences.FilterTranslucentParts) == "boolean", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "FilterTranslucentParts"))
-	assert(preferences.InFocusRadius == nil or type(preferences.InFocusRadius) == "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "InFocusRadius"))
+	assert(preferences.FirstPersonThreshold ~= nil or type(preferences.FirstPersonThreshold) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "FirstPersonThreshold"))
+	assert(preferences.MaxFocusDistance ~= nil or type(preferences.MaxFocusDistance) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "MaxFocusDistance"))
+	assert(preferences.MinFocusDistance ~= nil or type(preferences.MinFocusDistance) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "MinFocusDistance"))
+	assert(preferences.FilterTranslucentParts ~= nil or type(preferences.FilterTranslucentParts) ~= "boolean", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "FilterTranslucentParts"))
+	assert(preferences.InFocusRadius ~= nil or type(preferences.InFocusRadius) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "InFocusRadius"))
+	assert(preferences.SmoothTransitions ~= nil or type(preferences.SmoothTransitions) ~= "boolean", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "SmoothTransitions"))
+	assert(preferences.TransitionTime ~= nil or type(preferences.TransitionTime) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "TransitionTime"))
+	assert(preferences.TransitionThreshold ~= nil or type(preferences.TransitionThreshold) ~= "number", string.format("Argument 1 of Function ApplySettings's %q property is missing, nil, or of incorrect type.", "TransitionThreshold"))
 	-- i really hope all these asserts are necessary
 	
 	settings = preferences
@@ -109,48 +116,65 @@ local function CreateRay(char, pos, direction)
 	local viewportsize = cam.ViewportSize / 2
 	local screensize = Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2  - (gui:GetGuiInset().Y/2))
 	local unitRay
-	if pos and direction then
-		unitRay = Ray.new(pos, data.Camera.CFrame.LookVector * (direction * 2))
-	else
-		if settings.IgnoreGuiInset then
-			unitRay = cam:ViewportPointToRay(viewportsize.X, viewportsize.Y)
+	
+	if not data.Transitioning then
+		if pos and direction then
+			unitRay = Ray.new(pos, data.Camera.CFrame.LookVector * (direction * 2))
 		else
-			unitRay = cam:ScreenPointToRay(screensize.X, screensize.Y)
-		end
-	end
-
-	if settings.IgnoreCharacter then
-		if char then
-			if not data.InsertCharacterToBlacklist2 then
-				data.InsertCharacterToBlacklist2 = true
-				m:AddToRaycastFilter(char)
-			end
-		end
-	end
-
-	if settings.CompatibilityForFirstPerson and not settings.IgnoreCharacter then
-		if char then
-			local head = char:FindFirstChild("Head") or char.PrimaryPart -- primarypart in case theyre using a custom rig with no head
-			if (head.CFrame.Position - cam.CFrame.Position).Magnitude <= settings.FirstPersonThreshold then
-				
-				if not data.FilterCache then
-					data.FilterCache = settings.RaycastParameters.FilterDescendantsInstances
-				end
-				if not data.InsertCharacterToBlacklist then
-					print(direction)
-					data.InsertCharacterToBlacklist = true
-					m:AddToRaycastFilter(char)
-				end
+			if settings.IgnoreGuiInset then
+				unitRay = cam:ViewportPointToRay(viewportsize.X, viewportsize.Y)
 			else
-				data.InsertCharacterToBlacklist = false
-				m:RemoveFromRaycastFilter(char)
-				settings.RaycastParameters.FilterDescendantsInstances = data.FilterCache or settings.RaycastParameters.FilterDescendantsInstances
+				unitRay = cam:ScreenPointToRay(screensize.X, screensize.Y)
 			end
 		end
-	end
 
-	local ray = workspace:Raycast(unitRay.Origin, unitRay.Direction * settings.RayLength, settings.RaycastParameters)
-	return ray, unitRay.Direction
+		if settings.CompatibilityForFirstPerson and not settings.IgnoreCharacter then
+			if char then
+				local head = char:FindFirstChild("Head") or char.PrimaryPart -- primarypart in case theyre using a custom rig with no head
+				if (head.CFrame.Position - cam.CFrame.Position).Magnitude <= settings.FirstPersonThreshold then
+					
+					if not data.FilterCache then
+						data.FilterCache = settings.RaycastParameters.FilterDescendantsInstances
+					end
+					if not data.InsertCharacterToBlacklist then
+						print(direction)
+						data.InsertCharacterToBlacklist = true
+						m:AddToRaycastFilter(char)
+					end
+				else
+					data.InsertCharacterToBlacklist = false
+					m:RemoveFromRaycastFilter(char)
+					settings.RaycastParameters.FilterDescendantsInstances = data.FilterCache or settings.RaycastParameters.FilterDescendantsInstances
+				end
+			end
+		end
+
+		local ray = workspace:Raycast(unitRay.Origin, unitRay.Direction * settings.RayLength, settings.RaycastParameters)
+		return ray, unitRay.Direction
+	end
+end
+
+-- Sets the FocusDistance property of the DOF effect.
+local function SetFocusDistance(distance)
+	if settings.SmoothTransitions then
+		if not data.Transitioning then
+			if math.abs(data.dof.FocusDistance - distance) >= settings.TransitionThreshold then
+				local tween = ts:Create(data.dof, data.TweenInfo, {FocusDistance = math.clamp(distance, settings.MinFocusDistance, settings.MaxFocusDistance)})
+				tween:Play()
+				data.Transitioning = true
+				coroutine.wrap(function()
+					tween.Completed:Wait()
+					data.Transitioning = false
+				end)()
+			else -- dont transition, the distance isnt jarring enough
+				data.dof.FocusDistance = math.clamp(distance, settings.MinFocusDistance, settings.MaxFocusDistance)
+				data.Count = 0
+			end	
+		end
+	else
+		data.dof.FocusDistance = math.clamp(distance, settings.MinFocusDistance, settings.MaxFocusDistance)
+		data.Count = 0
+	end
 end
 
 -- Call the function that creates a ray from the middle of the camera. If it hits a translucent part and that
@@ -175,16 +199,14 @@ function RecursiveRay(cam, pos, direction)
 							data.AlreadyFiltered[instance] = false
 							m:RemoveFromRaycastFilter(instance)
 						end
-						data.dof.FocusDistance = math.clamp(distance, settings.MinFocusDistance, settings.MaxFocusDistance)
-						data.Count = 0
+						SetFocusDistance(distance)
 					end
 				else -- its terrain
 					data.dof.FocusDistance = math.clamp(distance, settings.MinFocusDistance, settings.MaxFocusDistance)
 					data.Count = 0
 				end
 			else
-				data.dof.FocusDistance = math.clamp(distance, settings.MinFocusDistance, settings.MaxFocusDistance)
-				data.Count = 0
+				SetFocusDistance(distance)
 			end
 		else
 			data.dof.FocusDistance = settings.MaxFocusDistance
