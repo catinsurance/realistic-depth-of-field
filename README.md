@@ -3,7 +3,7 @@ A module for realistic depth of field for Roblox.
 
 ## Installation
 
-Download the file to your computer and import to Roblox. A link to get it from the Roblox catalog will be available soon.
+Download the file to your computer (or alternatively get it from the Roblox catalog [here](https://www.roblox.com/library/6672922371/Realistic-Depth-Of-Field)) and import to Roblox. A link to get it from the Roblox catalog will be available soon.
 After you have installed it and imported it to Roblox Studio, place it somewhere that a local script can access. For this example, I'll be using *ReplicatedStorage.*
 
 ```lua
