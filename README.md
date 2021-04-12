@@ -7,9 +7,9 @@ Download the file to your computer and import to Roblox. A link to get it from t
 After you have installed it and imported it to Roblox Studio, place it somewhere that a local script can access. For this example, I'll be using *ReplicatedStorage.*
 
 ```lua
-local DynamicDepthOfField = require(game:GetService("ReplicatedStorage").path.to.module)
+local RealisticDOF = require(game:GetService("ReplicatedStorage").path.to.module)
 
-DynamicDepthOfField:Start()
+RealisticDOF:Start()
 ```
 
 ## Usage
@@ -31,23 +31,23 @@ m:Start()
 
 ## Documentation
 
-### Dictionary DynamicDOF:GetDefaultSettings()
+### Dictionary RealisticDOF:GetDefaultSettings()
 
 Returns a dictionary of the default settings for the module.
 
-### Dictionary DynamicDOF:GetSettings()
+### Dictionary RealisticDOF:GetSettings()
 
 Returns the settings currently in use by the module.
 
-### Array DynamicDOF:AddToRaycastFilter( Instance item )
+### Array RealisticDOF:AddToRaycastFilter( Instance item )
 
 Adds an item to the raycast filter that the module uses for the dynamic depth of field. Returns the updated raycast filter.
 
-### Void DynamicDOF:RemoveFromRaycastFilter( Instance item )
+### Void RealisticDOF:RemoveFromRaycastFilter( Instance item )
 
 Removes an item from the raycast filter that the module uses for the dynamic depth of field.
 
-### Void DynamicDOF:ApplySettings( Dictionary settings )
+### Void RealisticDOF:ApplySettings( Dictionary settings )
 
 Overwrites the current settings with the supplied `settings`. **Every field must be present, so it is recommended to first get the default settings and change them from there.**
 
@@ -90,11 +90,11 @@ m:Start()
 m:ApplySettings(settings)
 ```
 
-### Void DynamicDOF:Start()
+### Void RealisticDOF:Start()
 
 Starts the module. Self-explanatory.
 
-### Void DynamicDOF:Stop()
+### Void RealisticDOF:Stop()
 
 Stops the module. Self-explanatory.
 
